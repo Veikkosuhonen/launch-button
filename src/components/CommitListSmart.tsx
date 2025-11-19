@@ -4,6 +4,9 @@ import useSWR from "swr"
 import { Commit, Release } from "@/lib/github"
 import { GitCommit } from "lucide-react"
 import { Card, CardSkeleton } from "@/components/Card"
+import { useEffect, useRef } from "react"
+import { spaceMono } from "@/lib/fonts"
+import { format } from "date-fns"
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json())
 
@@ -18,10 +21,30 @@ export function CommitListSmart({ owner, repo }: { owner: string; repo: string }
     fetcher
   )
 
+  const latestReleaseDate = releases && releases[0]?.published_at ? new Date(releases[0].published_at) : null
+
+  const pukinkonttiAgeRef = useRef<HTMLSpanElement>(null)
+
+  useEffect(() => {
+    const updateFn = () => {
+      const elapsedTime = latestReleaseDate ? new Date().getTime() - latestReleaseDate.getTime() : null
+      const formattedElapsedTime = elapsedTime ? format(elapsedTime, "ddd HH:mm:ss") : ""
+      pukinkonttiAgeRef.current!.textContent = formattedElapsedTime
+    }
+
+    if (pukinkonttiAgeRef.current) {
+      updateFn()
+      const clearId = setInterval(() => {
+        updateFn()
+      }, 1000)
+
+      return () => clearInterval(clearId)
+    }
+  }, [pukinkonttiAgeRef.current, latestReleaseDate])
+
   if (commitsError || releasesError) return <div className="text-destructive">Failed to load commits</div>
   if (commitsLoading || releasesLoading) return <CardSkeleton />
 
-  const latestReleaseDate = releases && releases[0]?.published_at ? new Date(releases[0].published_at) : null
   
   const unreleasedCommits = latestReleaseDate && commits
     ? commits.filter((commit) => {
@@ -32,13 +55,18 @@ export function CommitListSmart({ owner, repo }: { owner: string; repo: string }
 
   return (
     <div>
-      <p className="text-xs text-muted-foreground mb-2">
-        {latestReleaseDate 
-          ? `Commits since ${latestReleaseDate.toLocaleDateString()}`
-          : "All recent commits (no releases found)"}
-      </p>
+      <div className="flex items-center justify-between">
+        <p className="text-xs text-muted-foreground mb-2">
+          {latestReleaseDate 
+            ? `Commits since ${latestReleaseDate.toLocaleDateString()}`
+            : "All recent commits (no releases found)"}
+        </p>
+        <p className="text-xs text-muted-foreground mb-2">
+          PUKINKONTTI AGE: <span className={`${spaceMono.className} text-primary`} ref={pukinkonttiAgeRef}></span>
+        </p>
+      </div>
       {unreleasedCommits.length === 0 ? (
-        <Card className="text-center text-sm text-muted-foreground">
+        <Card className1="text-center text-sm text-muted-foreground">
           No unreleased commits found
         </Card>
       ) : (

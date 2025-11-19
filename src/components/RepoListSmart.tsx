@@ -29,7 +29,7 @@ export function RepoListSmart() {
           href={`/dashboard/${repo.owner.login}/${repo.name}`}
           className="block transition-all hover:opacity-100 group"
         >
-          <Card className="h-full hover:border-primary/50 hover:bg-primary/5 transition-all duration-300 group-hover:shadow-[0_0_15px_rgba(239,68,68,0.1)]">
+          <Card className1="h-full hover:border-primary/50 hover:bg-primary/5 transition-all duration-300 group-hover:shadow-[0_0_15px_rgba(239,68,68,0.1)]">
             <CardHeader className="pb-2">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2">

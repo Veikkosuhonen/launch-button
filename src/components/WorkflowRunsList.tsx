@@ -37,7 +37,7 @@ export function WorkflowRunsList({ owner, repo }: { owner: string; repo: string 
       {runs.map((run) => (
         <Card
           key={run.id}
-          className="flex items-center justify-between hover:bg-primary/5 hover:border-primary/50 transition-all duration-300 group"
+          className1="flex items-center justify-between hover:bg-primary/5 hover:border-primary/50 transition-all duration-300 group"
         >
           <div className="flex items-center gap-3">
             <StatusIcon status={run.status} conclusion={run.conclusion} />
@@ -60,7 +60,7 @@ export function WorkflowRunsList({ owner, repo }: { owner: string; repo: string 
           <div className="text-xs font-medium">
             <span
               className={clsx(
-                "px-2 py-0.5 rounded-full border",
+                "px-2 py-0.5",
                 run.status === "completed" && run.conclusion === "success" && "bg-green-500/5 text-green-500/70 border-green-500/20",
                 run.status === "completed" && run.conclusion === "failure" && "bg-primary/10 text-primary border-primary/30",
                 (run.status === "queued" || run.status === "in_progress") && "bg-yellow-500/10 text-yellow-500 border-yellow-500/20"

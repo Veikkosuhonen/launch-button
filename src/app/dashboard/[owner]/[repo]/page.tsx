@@ -19,18 +19,18 @@ export default async function RepoPage({ params }: { params: Promise<{ owner: st
 
       <div className="grid gap-6 lg:grid-cols-2">
         <div className="space-y-6">
-          <section className="space-y-2">
+          <section className="space-y-2 card-border p-4">
             <h2 className="text-lg font-semibold text-foreground">Unreleased Commits</h2>
             <CommitListSmart owner={owner} repo={repo} />
           </section>
 
-          <section className="space-y-2">
+          <section className="space-y-2 card-border p-4">
             <h2 className="text-lg font-semibold text-foreground">Recent Workflow Runs</h2>
             <WorkflowRunsList owner={owner} repo={repo} />
           </section>
         </div>
         
-        <div className="space-y-2">
+        <div className="space-y-2 card-border p-4">
           <h2 className="text-lg font-semibold text-foreground">Recent Releases</h2>
           <ReleaseListSmart owner={owner} repo={repo} />
         </div>

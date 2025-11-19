@@ -30,6 +30,18 @@
   --ring: #ef4444;
 }
 
+.card-border {
+  corner-shape: bevel;
+  border-radius: 1rem 0.5rem 1rem 0.5rem;
+  border-width: 2px;
+  border-style: ridge;
+  border-color: var(--border);
+}
+
+.card-border:hover {
+  border-color: var(--primary);
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);

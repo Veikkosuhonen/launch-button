@@ -4,21 +4,17 @@ import useSWR from "swr"
 import { Release } from "@/lib/github"
 import { Tag, Calendar } from "lucide-react"
 import { Card, CardSkeleton } from "@/components/Card"
-
-const fetcher = (url: string) => fetch(url).then((res) => res.json())
+import { useReleases } from "@/hooks/useReleases"
 
 export function ReleaseListSmart({ owner, repo }: { owner: string; repo: string }) {
-  const { data: releases, error, isLoading } = useSWR<Release[]>(
-    `/api/github/${owner}/${repo}/releases`,
-    fetcher
-  )
+  const { releases, error, isLoading } = useReleases({ owner, repo })
 
   if (error) return <div className="text-destructive">Failed to load releases</div>
   if (isLoading) return <CardSkeleton />
 
   if (!releases || releases.length === 0) {
     return (
-      <Card className="text-center text-sm text-muted-foreground">
+      <Card className1="text-center text-sm text-muted-foreground">
         No releases found
       </Card>
     )
