@@ -37,7 +37,7 @@ export function WorkflowRunsList({ owner, repo }: { owner: string; repo: string 
       {runs.map((run) => (
         <Card
           key={run.id}
-          className1="flex items-center justify-between hover:bg-primary/5 hover:border-primary/50 transition-all duration-300 group"
+          className2="flex items-center justify-between hover:bg-primary/5 hover:border-primary/50 transition-all duration-300 group"
         >
           <div className="flex items-center gap-3">
             <StatusIcon status={run.status} conclusion={run.conclusion} />

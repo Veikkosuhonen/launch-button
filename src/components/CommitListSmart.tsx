@@ -66,7 +66,7 @@ export function CommitListSmart({ owner, repo }: { owner: string; repo: string }
         </p>
       </div>
       {unreleasedCommits.length === 0 ? (
-        <Card className1="text-center text-sm text-muted-foreground">
+        <Card className2="text-center text-sm text-muted-foreground">
           No unreleased commits found
         </Card>
       ) : (

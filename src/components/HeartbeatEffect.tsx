@@ -44,7 +44,7 @@ export const HeartbeatEffect = ({ heat = 5 }: { heat: number }) => {
           v += (Math.sin(l * 0.71361 * (t * 1.5 + i))) * (amp + 2)
           v += (Math.sin(l * 0.51361 * (t * 2.5 + i * 4.0))) * (amp / 2)
           v += (Math.sin(l * 2.46141 * (-t * 2.5 + i * 2.0))) * (amp / 3)
-          v = Math.abs(v)
+          v = Math.abs(v) * (amp * 0.05 + 1.1)
           element.style.height = `${v}px`
         }
       })
@@ -59,17 +59,18 @@ export const HeartbeatEffect = ({ heat = 5 }: { heat: number }) => {
     <div className="relative flex flex-1">
       <div ref={containerRef} className="absolute flex h-full w-full items-center justify-between">
         {Array.from({ length: numBars }).map((_, i) => {
-          const s1 = Math.ceil((Math.random()) * 4)
-          const s2 = Math.ceil((Math.random()) * 4)
-          const lineW = Math.floor(Math.random() + 1)
+          const s1 = Math.ceil((Math.random()) * 3)
+          const s2 = Math.ceil((Math.random()) * 3)
+          const lineW = Math.round(Math.random() * 1) + 1
           return (
             <div key={i}>
               <div
                 data-heartbeat-idx={i}
-                className={`w-[${lineW}px] h-4 bg-primary flex flex-col items-center justify-between`}
+                className={`h-4 bg-primary flex flex-col items-center justify-between`}
+                style={{ width: `${lineW}px` }}
               >
-                <div className={`h-[${s1}px] w-[${s1}px] bg-foreground rounded-full`} />
-                <div className={`h-[${s2}px] w-[${s2}px] bg-foreground rounded-full`} />
+                <div className={`bg-foreground rounded-full`} style={{ height: `${s1}px`, width: `${s1}px` }}/>
+                <div className={`bg-foreground rounded-full`} style={{ height: `${s2}px`, width: `${s2}px` }}/>
               </div>
             </div>
           )

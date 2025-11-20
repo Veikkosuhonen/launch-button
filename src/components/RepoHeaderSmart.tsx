@@ -10,6 +10,14 @@ import { spaceMono } from "@/lib/fonts"
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json())
 
+const StatusColors = {
+  Exceptional: "bg-violet-400",
+  Good: "bg-green-500",
+  Healthy: "bg-teal-500",
+  Endangered: "bg-red-300",
+  Dead: "bg-red-500"
+}
+
 export function RepoHeaderSmart({ owner, repo }: { owner: string; repo: string }) {
   const { data: repository, error, isLoading } = useSWR<Repository>(
     `/api/github/${owner}/${repo}`,
@@ -21,9 +29,19 @@ export function RepoHeaderSmart({ owner, repo }: { owner: string; repo: string }
   const heat = releases ? releases.reduce((acc, release) => {
     const date = release.published_at ? Date.parse(release.published_at) : 0
     const agoDays = (Date.now() - date) / 1000 / 60 / 60 / 24
-    const heat = 2.0 / (agoDays + 2) + 0.1
+    const heat = 2.0 / (agoDays + 2)
     return acc + heat
   }, 0) : 0
+
+  const status: keyof typeof StatusColors = heat > 3 ?
+    "Exceptional" :
+    heat > 1.9
+    ? "Good" :
+    heat > 0.95
+      ? "Healthy" 
+      : heat > 0.6
+        ? "Endangered" 
+        : "Dead"
 
   if (error) return <div className="text-destructive mb-8">Failed to load repository details</div>
   
@@ -52,6 +70,7 @@ export function RepoHeaderSmart({ owner, repo }: { owner: string; repo: string }
       </div>
       <div className="flex-1 px-4 card-border h-32 flex items-center justify-center relative">
         <p className="text-xs text-muted-foreground absolute top-0 left-4">RELEASE HEAT: <span className={`${spaceMono.className} text-primary`}>{heat.toFixed(2)}</span></p>
+        <p className="text-xs text-muted-foreground absolute top-0 right-4">STATUS: <span className={`${StatusColors[status]} uppercase text-black font-bold px-1 py-0.5`}>{status}</span></p>
         <HeartbeatEffect heat={heat} />
       </div>
     </div>

@@ -1,17 +1,10 @@
-import { auth } from "@/auth"
 import { WorkflowRunsList } from "@/components/WorkflowRunsList"
 import { ReleaseListSmart } from "@/components/ReleaseListSmart"
 import { CommitListSmart } from "@/components/CommitListSmart"
 import { RepoHeaderSmart } from "@/components/RepoHeaderSmart"
-import { redirect } from "next/navigation"
 
 export default async function RepoPage({ params }: { params: Promise<{ owner: string; repo: string }> }) {
-  const session = await auth()
   const { owner, repo } = await params
-
-  if (!session?.accessToken) {
-    redirect("/")
-  }
 
   return (
     <div className="min-h-screen p-4 md:p-6">
